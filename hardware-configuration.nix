@@ -16,18 +16,19 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/1b12a574-1ba2-4b1d-806f-1b37cd29a90a";
       fsType = "btrfs";
+      options = [ "compress=zstd" "noatime" "discard=async" ];
     };
 
   fileSystems."/home" =
     { device = "/dev/disk/by-uuid/1b12a574-1ba2-4b1d-806f-1b37cd29a90a";
       fsType = "btrfs";
-      options = [ "subvol=home" ];
+      options = [ "subvol=home" "compress=zstd" "noatime" "discard=async" ];
     };
 
   fileSystems."/nix" =
     { device = "/dev/disk/by-uuid/1b12a574-1ba2-4b1d-806f-1b37cd29a90a";
       fsType = "btrfs";
-      options = [ "subvol=nix" ];
+      options = [ "subvol=nix" "compress=zstd" "noatime" "discard=async" ];
     };
 
   fileSystems."/boot" =
@@ -40,7 +41,4 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  # swapiness
-  boot.kernel.sysctl = { "vm.swappiness" = 10;};
 }
