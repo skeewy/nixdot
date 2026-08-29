@@ -4,7 +4,7 @@
   # ===========================================================================
   # 1. SYSTEM CONFIGURATION & BOOT
   # ===========================================================================
-  imports = [ 
+  imports = [  
     ./hardware-configuration.nix
   ];
 
@@ -70,7 +70,7 @@
   # 4. HARDWARE, DRIVERS & VIRTUALIZATION
   # ===========================================================================
   hardware.enableRedistributableFirmware = true;
-  
+   
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
@@ -84,7 +84,11 @@
     memoryPercent = 50;
   };
 
-  virtualisation.waydroid.enable = true;
+#  virtualisation.waydroid.enable = true;
+  virtualisation.waydroid = {
+    enable = true;
+    package = pkgs.waydroid-nftables;
+  };
 
   programs.virt-manager.enable = true;
   virtualisation.libvirtd = {
@@ -105,8 +109,8 @@
       intel-media-driver
       intel-vaapi-driver
       libvdpau-va-gl
-      intel-media-sdk               # For 10th Gen Intel and older (OBS QuickSync)
-      intel-compute-runtime-legacy1 # For HD 620 (Gen9 Kaby Lake) / DaVinci Resolve OpenCL
+      intel-media-sdk              # For 10th Gen Intel and older (OBS QuickSync)
+      intel-compute-runtime-legacy1 # For HD 620 (Gen9 Kaby Lake) / OpenCL
     ];
     extraPackages32 = with pkgs.pkgsi686Linux; [
       intel-media-driver
@@ -116,7 +120,7 @@
 
   # Ensures your SSD stays fast and healthy (Crucial for BTRFS)
   services.fstrim.enable = true;
-  
+   
   # Updates Intel CPU microcode on boot for security and stability
   hardware.cpu.intel.updateMicrocode = true;
 
@@ -128,10 +132,7 @@
     "intel-media-sdk-23.2.2"
   ];
 
-  nix.settings = {
-    # Add this line:
-    experimental-features = [ "nix-command" "flakes" ];
-    
+  nix.settings = {     
     auto-optimise-store = true;
     substituters = [
       "https://cache.nixos.org/"
@@ -142,7 +143,7 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
-  
+   
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -153,7 +154,6 @@
 
   # Fish must be enabled globally to set it as a default user shell
   programs.fish.enable = true;      
-#  programs.firefox.enable = true;
 
   # Only core system tools go here. User apps go in home.nix.
   environment.systemPackages = with pkgs; [
@@ -161,6 +161,8 @@
     unrar
     wl-clipboard
     brave
+    steam-run
+    nix-ld
   ];
 
   # ===========================================================================
@@ -171,7 +173,7 @@
     description = "mtoxd9";
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
     packages = with pkgs; [ kdePackages.kate ];
-    shell = pkgs.fish;  
+    shell = pkgs.fish;   
   };
 
   system.stateVersion = "26.05";
