@@ -24,7 +24,6 @@
     obs-studio
     qemu
     quickemu
-    davinci-resolve
     ffmpeg
     vlc
     bat # Better 'cat'
@@ -33,6 +32,7 @@
     gcc
     lldb
     telegram-desktop
+    pcsx2
   ];
 
   # =========================================================================
@@ -93,13 +93,13 @@
   # =========================================================================
   programs.fish = {
     enable = true;
-    
+     
     shellAbbrs = {
       df = "df -h";
       du = "du -h";
       free = "free -h";
     };
-    
+     
     shellAliases = {
       # The master update command for the separated setup
       up = "sudo nix-channel --update && nix-channel --update && home-manager switch && sudo nixos-rebuild boot --upgrade";
@@ -132,7 +132,7 @@
 
     interactiveShellInit = ''
       set -g fish_greeting ""      
-      
+       
       if test -d ~/.local/bin
           fish_add_path -g ~/.local/bin
       end
@@ -162,7 +162,7 @@
       set -g fish_pager_color_selected_prefix f5c2e7 --bold
       set -g fish_pager_color_selected_completion cdd6f4
       set -g fish_pager_color_selected_description a6e3a1
-      
+       
       set -g fish_completion_max_results 50
     '';
   };
@@ -220,53 +220,24 @@
 
   programs.zoxide.enable = true;
   programs.fzf.enable = true;
-  # home.nix (Home Manager)
-#  programs.firefox = {
-#    enable = true;
-#    profiles.default = {
-#      settings = {
-#        "dom.ipc.processCount" = 2;                   # Limits background processes
-#        "browser.sessionstore.restore_on_demand" = true; # Load active tab only on start
-#        "browser.tabs.unloadOnLowMemory" = true;       # Auto-discard idle tabs
-#        "accessibility.force_disabled" = 1;            # Disable heavy accessibility engine
-#      };
-#    };
-#  };
 
-programs.firefox = {
-  enable = true;
-  profiles = {
-    "df93s7ct.default" = {
-      id = 0;
-      isDefault = true;
-      path = "df93s7ct.default";
+  programs.firefox = {
+    enable = true;
+    profiles = {
+      "df93s7ct.default" = {
+        id = 0;
+        isDefault = true;
+        path = "df93s7ct.default";
 
-      settings = {
-        "dom.ipc.processCount" = 2;
-        "browser.sessionstore.restore_on_demand" = true;
-        "browser.tabs.unloadOnLowMemory" = true;
-        "accessibility.force_disabled" = 1;
+        settings = {
+          "dom.ipc.processCount" = 2;
+          "browser.sessionstore.restore_on_demand" = true;
+          "browser.tabs.unloadOnLowMemory" = true;
+          "accessibility.force_disabled" = 1;
+        };
       };
     };
   };
-};
-
-#  programs.firefox = {
-#   enable = true;
-#   profiles = {
-#     "mtoxd9.default" = { # Changed from df93s7ct.default
-#       id = 0;
-#       isDefault = true;
-#       path = "mtoxd9.default";
-#       settings = {
-#         "dom.ipc.processCount" = 2;
-#         "browser.sessionstore.restore_on_demand" = true;
-#         "browser.tabs.unloadOnLowMemory" = true;
-#         "accessibility.force_disabled" = 1;
-#       };
-#     };
-#   };
-# };
 
   # =========================================================================
   # 6. DCONF / VIRT-MANAGER
